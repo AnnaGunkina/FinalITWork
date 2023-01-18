@@ -1,60 +1,43 @@
-﻿Console.Clear();
-string[] ArrayStrings = new string[] { };
-Console.Write("Введите количество элементов массива - строк: ");
-int n = int.Parse(Console.ReadLine());
-ArrayStrings = new string[n];
-for (int i = 0; i < ArrayStrings.Length; i++)
-{
-    Console.Write($" Введите {i + 1} строку: ");
-    ArrayStrings[i] = Console.ReadLine();
-}
-Console.WriteLine();
-Console.Write("Массив введенных данных: ");
-Console.Write($"{PrintArray(ArrayStrings)}");
-Console.WriteLine();
-int length = 3;  
+﻿using System;
+using static System.Console;
+Clear();
+string[] array = AskArray();
+string[] result = FindLessThan(array, 3);
+WriteLine($"[{string.Join(", ", array)}] -> [{string.Join(" , ", result)}]");
 
-int CheckArray(string[] array, int length)
+string[] FindLessThan(string[] input, int n)
 {
-    int result = 0;
-    for (int i = 0; i < array.Length; i++)
+    string[] output = new string[CountLessThan(input, n)];
+
+    for (int i = 0, j = 0; i < input.Length; i++)
     {
-        if (array[i].Length <= length) result++;
-    }
-    return result;
-}
-
-int numbers = CheckArray(ArrayStrings, length); 
-
-string[] newArrayStrings = new string[numbers]; 
-NewArray(ArrayStrings, newArrayStrings, length);
-
-void NewArray(string[] oldArray, string[] newArray, int lengthLimit)
-{
-    int temp = 0;
-    for (int i = 0; i < oldArray.Length; i++)
-    {
-        if (oldArray[i].Length <= lengthLimit)
+        if (input[i].Length <= n)
         {
-            newArray[temp] = oldArray[i];
-            temp++;
+            output[j] = input[i];
+            j++;
         }
     }
+
+    return output;
 }
 
-string PrintArray(string[] array)
+int CountLessThan(string[] input, int n)
 {
-    string result = string.Empty;
-    result = "[ ";
-    for (int i = 0; i < array.Length; i++)
+    int count = 0;
+
+    for (int i = 0; i < input.Length; i++)
     {
-        result += $"{array[i],1}";
-        if (i < array.Length - 1) result += ", ";
+        if (input[i].Length <= n)
+        {
+            count++;
+        }
     }
-    result += " ]";
-    return result;
+
+    return count;
 }
 
-Console.Write("Новый массив из строк, длина которых меньше, либо равна 3 символам -> ");
-Console.Write($"{PrintArray(newArrayStrings)}");
-
+string[] AskArray()
+{
+    Write("Введите значения через пробел: ");
+    return ReadLine().Split(" ");
+}
